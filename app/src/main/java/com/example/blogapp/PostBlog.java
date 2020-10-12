@@ -1,11 +1,13 @@
 package com.example.blogapp;
 
+import java.util.Date;
+
 public class PostBlog {
 
     public String description,image_URL,user_id;
-    public String timestamp;
+    public Date timestamp;
 
-    public PostBlog(String description, String image_URL, String user_id, String timestamp) {
+    public PostBlog(String description, String image_URL, String user_id, Date timestamp) {
         this.description = description;
         this.image_URL = image_URL;
         this.user_id = user_id;
@@ -24,12 +26,12 @@ public class PostBlog {
         this.description = description;
     }
 
-    public String image_URL() {
+    public String getImage_URL() {
         return image_URL;
     }
 
-    public void image_URL(String image) {
-        this.image_URL = image;
+    public void setImage_URL(String image_URL) {
+        this.image_URL = image_URL;
     }
 
     public String getUser_id() {
@@ -40,11 +42,11 @@ public class PostBlog {
         this.user_id = user_id;
     }
 
-    public String getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 }

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -28,7 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar_main;
-    private FloatingActionButton addPostFloatingButton;
+    private Button addPostFloatingButton;
     private BottomNavigationView bottomNavigationView;
 
     private FirebaseAuth mAuth;
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
               Toast.makeText(MainActivity.this, "IS FloatingButton Working?", Toast.LENGTH_LONG).show();
             }
         });
+
+        // For setting HomeFragment as a default page
+        ReplaceFragment(homeFragment);
 
        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
            @Override

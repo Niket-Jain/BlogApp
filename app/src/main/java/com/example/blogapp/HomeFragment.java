@@ -10,16 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -27,21 +31,17 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import Adapters.HomeAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class HomeFragment extends Fragment {
 
     private RecyclerView blogListView;
-
-   // private List<PostBlog> blog_list;
-
+    private List<PostBlog> blog_list;
     private FirebaseFirestore firebaseFirestore;
+    private CollectionReference ref;
+    private HomeAdapter adapter;
 
-   // private BlogAdapterRecyclerView blogRecyclerAdapter;
-
-    private FirestoreRecyclerAdapter adapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -53,94 +53,42 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View mview =inflater.inflate(R.layout.fragment_home, container, false);
+        View mView =inflater.inflate(R.layout.fragment_home, container, false);
 
-       // blogRecyclerAdapter= new BlogAdapterRecyclerView(blog_list);
+        // Firebase
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        ref = firebaseFirestore.collection("Posts");
 
-       // blog_list= new ArrayList<>();
 
-        blogListView= mview.findViewById(R.id.blogListView);
+        blog_list = new ArrayList<>();
 
-       //  blogListView.setAdapter(blogRecyclerAdapter);
-       // blogListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // Init RecyclerView
+        blogListView = mView.findViewById(R.id.blogListView);
+        blogListView.setLayoutManager(new LinearLayoutManager(getContext()));
+        blogListView.setHasFixedSize(false);
 
-        firebaseFirestore= FirebaseFirestore.getInstance();
-       /* firebaseFirestore.collection("Posts").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        gettingData();
+        adapter = new HomeAdapter(blog_list,getContext());
+        blogListView.setAdapter(adapter);
+
+        return mView;
+    }
+
+    private void gettingData() {
+
+        Query query = firebaseFirestore.collection("Posts").orderBy("timestamp",Query.Direction.DESCENDING);
+
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-                for (DocumentChange doc: queryDocumentSnapshots.getDocumentChanges()){
-                    if (doc.getType() == DocumentChange.Type.ADDED){
-
-                        PostBlog postBlog= doc.getDocument().toObject(PostBlog.class);
-                        blog_list.add(postBlog);
-
-                        blogRecyclerAdapter.notifyDataSetChanged();
-                    }
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot snapshot: queryDocumentSnapshots){
+                    PostBlog post = snapshot.toObject(PostBlog.class);
+                    blog_list.add(post);
                 }
 
+                adapter.notifyDataSetChanged();
             }
         });
-        */
 
-       // Setting up a query first.
-
-        Query query= firebaseFirestore.collection("Posts");
-
-        // FireStore Recycler Adapter is required.
-
-        FirestoreRecyclerOptions<PostBlog> options = new FirestoreRecyclerOptions.Builder<PostBlog>()
-                .setQuery(query,PostBlog.class)
-                .build();
-
-         adapter= new FirestoreRecyclerAdapter<PostBlog, BlogViewHolder>(options) {
-            @NonNull
-            @Override
-            public BlogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_listview,parent,false);
-
-                return new BlogViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull BlogViewHolder holder, int position, @NonNull PostBlog model) {
-                holder.description.setText(model.getDescription());
-            }
-        };
-
-         // Setting adapter to the blogListView to represent the data..
-
-         blogListView.setHasFixedSize(true);
-         // blogListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-         blogListView.setAdapter(adapter);
-
-
-        return mview;
-    }
-
-    // A ViewHolder class is necessary.
-
-    private class BlogViewHolder extends RecyclerView.ViewHolder{
-
-        private TextView description;
-
-        public BlogViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            description= itemView.findViewById(R.id.blogDescriptionTextView);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
     }
 }

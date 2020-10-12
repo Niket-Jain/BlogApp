@@ -95,7 +95,7 @@ public class SetupActivity extends AppCompatActivity {
 
                         usernameEditText.setText(name);
 
-//This line of code is for holding an image when the data is loading. Where as Glide is an open souce library to change the image View to some kind of String.
+//This line of code is for holding an image when the data is loading. Where as Glide is an open source library to change the image View to some kind of String.
 // So that we can safe it to the app and Reflect back to the Circle Image View.
 // We are going to safe the data in Offline mode as well.
 

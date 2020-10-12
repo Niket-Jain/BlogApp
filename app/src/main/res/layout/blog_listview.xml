@@ -13,7 +13,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,29 +22,48 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/InnerConstraintlayout"
             android:layout_width="match_parent"
-            android:layout_height="446dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/blogPostImageView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dpCircleImageView"
                 app:srcCompat="@drawable/border" />
 
-            <TextView
-                android:id="@+id/dateTextView"
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/blogDescriptionTextView"
+                app:srcCompat="@drawable/ic_share" />
+
+            <ImageView
+                android:id="@+id/imageView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="3dp"
-                android:text="10 June 2020"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/dpCircleImageView"
-                app:layout_constraintTop_toBottomOf="@+id/UserNameTextView" />
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toBottomOf="@+id/blogDescriptionTextView"
+                app:srcCompat="@drawable/ic_baseline_comment_24" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/blogDescriptionTextView"
+                app:srcCompat="@drawable/ic_like" />
 
             <TextView
                 android:id="@+id/UserNameTextView"
@@ -71,6 +89,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/blogPostImageView" />
+
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:text="10 June 2020"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/dpCircleImageView"
+                app:layout_constraintTop_toBottomOf="@+id/UserNameTextView" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/dpCircleImageView"
