@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,12 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -43,6 +49,7 @@ import id.zelory.compressor.Compressor;
 
 public class MyPostActivity extends AppCompatActivity {
 
+    // Init.
     private static int MAX_LENGTH = 100;
     private ImageView myPostImageView;
     private EditText postDescriptionEditText;
@@ -55,6 +62,7 @@ public class MyPostActivity extends AppCompatActivity {
 
     private File compressedImageFile;
 
+    // firebase
     private StorageReference storageReference;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth mAuth;
@@ -82,6 +90,7 @@ public class MyPostActivity extends AppCompatActivity {
         myPostImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // To compress the Image.
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setMinCropResultSize(512,512)
@@ -94,6 +103,8 @@ public class MyPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(MyPostActivity.this, "Upload Image as well as Username plz", Toast.LENGTH_SHORT).show();
+
                 final String description= postDescriptionEditText.getText().toString();
 
                 if (!TextUtils.isEmpty(description) && postImageURi != null){
@@ -101,6 +112,12 @@ public class MyPostActivity extends AppCompatActivity {
                     myPostProgressBar.setVisibility(View.VISIBLE);
 
                     final String randomID= UUID.randomUUID().toString();
+
+                    Date c = Calendar.getInstance().getTime();
+                    System.out.println("Current time => " + c);
+
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                    final String date = df.format(c);
 
                     final StorageReference filePath= storageReference.child("Post_Details").child(randomID+ ".jpg");
 
@@ -120,8 +137,9 @@ public class MyPostActivity extends AppCompatActivity {
                                         postMAP.put("image_URL",uri.toString());
                                         postMAP.put("description",description);
                                         postMAP.put("user_id",currentUSerId);
-                                        postMAP.put("timestamp",randomID);
+                                        postMAP.put("timestamp",date);
 
+                                        // To upload the data to DB.
                                         firebaseFirestore.collection("Posts").add(postMAP).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
@@ -159,18 +177,19 @@ public class MyPostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // To check if the request is from the Crop Activity Only.
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             if (resultCode == RESULT_OK) {
 
+                // Converting to URi.
                 postImageURi= result.getUri();
                 myPostImageView.setImageURI(postImageURi);
 
-
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-
+                // Exception Handling.
                 Exception error = result.getError();
                 Toast.makeText(this, "Error:" + error.toString() , Toast.LENGTH_SHORT).show();
             }

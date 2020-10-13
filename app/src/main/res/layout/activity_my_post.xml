@@ -26,12 +26,14 @@
         android:id="@+id/newPostImageView"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
+        android:background="#F3C7C7"
         android:padding="16dp"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myPostToolBar"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@mipmap/addlarge" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/myPostToolBar"
@@ -65,4 +67,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myPostToolBar" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Upload Your Post from here."
+        app:layout_constraintBottom_toTopOf="@+id/postdescriptionEditText"
+        app:layout_constraintEnd_toEndOf="@+id/postdescriptionEditText"
+        app:layout_constraintTop_toTopOf="@+id/postdescriptionEditText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

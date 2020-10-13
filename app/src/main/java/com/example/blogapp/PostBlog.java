@@ -5,9 +5,9 @@ import java.util.Date;
 public class PostBlog {
 
     public String description,image_URL,user_id;
-    public Date timestamp;
+    public String timestamp;
 
-    public PostBlog(String description, String image_URL, String user_id, Date timestamp) {
+    public PostBlog(String description, String image_URL, String user_id, String timestamp) {
         this.description = description;
         this.image_URL = image_URL;
         this.user_id = user_id;
@@ -42,11 +42,11 @@ public class PostBlog {
         this.user_id = user_id;
     }
 
-    public Date getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }

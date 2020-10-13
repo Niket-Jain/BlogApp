@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    // Init.
     private Button CreateAccount_Button;
     private Button alreadyExist_Button;
     private ProgressBar regProgressBaar;
@@ -27,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText regPasswordText;
     private EditText regConfirmPassText;
 
+    // Firebase
     private FirebaseAuth mAuth;
 
     @Override
@@ -58,12 +60,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String regPass= regPasswordText.getText().toString();
                 String confirmPass= regConfirmPassText.getText().toString();
 
+                // Checking if the credential is not empty.
                 if (!TextUtils.isEmpty(regEmail) && !TextUtils.isEmpty(regPass) && !TextUtils.isEmpty(confirmPass)){
 
                     if (regPass.equals(confirmPass)){
 
                         regProgressBaar.setVisibility(View.VISIBLE);
 
+                        // Creating Account.
                         mAuth.createUserWithEmailAndPassword(regEmail,regPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -96,6 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        // If user is logged in.
         FirebaseUser user= mAuth.getCurrentUser();
         if (user != null){
             SendToMain();
@@ -103,7 +108,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void SendToMain() {
-
         Intent intent= new Intent(RegisterActivity.this,MainActivity.class);
         startActivity(intent);
         finish();

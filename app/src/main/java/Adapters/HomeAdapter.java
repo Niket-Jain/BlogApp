@@ -49,6 +49,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // To inflate the layouts.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_listview,parent,false);
         return new ViewHolder(view);
     }
@@ -59,11 +60,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         PostBlog post = blog_list.get(position);
 
         holder.description.setText(post.getDescription());
-        long milliSecs = post.getTimestamp().getTime();
-        String date = DateFormat.format("MM/dd/yyyy",new Date(milliSecs)).toString();
 
-        holder.date.setText(date);
+        holder.date.setText(post.getTimestamp());
 
+        // To set Image.
         Glide.with(context).load(post.getImage_URL()).into(holder.post);
 
         // To load the personal Info.
@@ -91,6 +91,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
+        // Init.
         public CircleImageView dp;
         public TextView date,username,description;
         public ImageView post;

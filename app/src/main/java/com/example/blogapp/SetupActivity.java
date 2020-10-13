@@ -46,12 +46,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SetupActivity extends AppCompatActivity {
 
+    // Init.
    private CircleImageView circleImageView;
    private Uri mainImageURI= null;
    private EditText usernameEditText;
    private Button updateButton;
    private ProgressBar setup_progressBar;
 
+   // Firebase
    private StorageReference storageReference;
    private FirebaseAuth firebaseAuth;
    private FirebaseFirestore firebaseFirestore;
@@ -80,6 +82,8 @@ public class SetupActivity extends AppCompatActivity {
 
         setup_progressBar.setVisibility(View.VISIBLE);
         updateButton.setEnabled(false);
+
+        // Targeting the Document.
         firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -88,22 +92,24 @@ public class SetupActivity extends AppCompatActivity {
                     if (task.getResult().exists()) {
                         Toast.makeText(SetupActivity.this, "Data Exists", Toast.LENGTH_SHORT).show();
 
+
                         String name= task.getResult().getString("name");
                         String image= task.getResult().getString("image");
 
                         mainImageURI= Uri.parse(image);
 
                         usernameEditText.setText(name);
+/*
 
-//This line of code is for holding an image when the data is loading. Where as Glide is an open source library to change the image View to some kind of String.
-// So that we can safe it to the app and Reflect back to the Circle Image View.
-// We are going to safe the data in Offline mode as well.
+ This line of code is for holding an image when the data is loading. Where as Glide is an open source library to change the image View to some kind of String.
+ So that we can safe it to the app and Reflect back to the Circle Image View.
+ We are going to safe the data in Offline mode as well.
+
+ */
 
                         RequestOptions placeHolderRequest= new RequestOptions();
                         placeHolderRequest.placeholder(R.drawable.pic);
                         Glide.with(SetupActivity.this).setDefaultRequestOptions(placeHolderRequest).load(image).into(circleImageView);
-
-
                     }
                 }else{
                     String error= task.getException().getMessage();
@@ -186,7 +192,6 @@ public class SetupActivity extends AppCompatActivity {
 
         if (uri != null) {
            downloadURI = uri;
-
         } else {
             downloadURI= mainImageURI;
         }
@@ -198,6 +203,7 @@ public class SetupActivity extends AppCompatActivity {
         userMap.put("name",username);
         userMap.put("image",downloadURI.toString());
 
+        // Putting Data to the DB. Through Map
         firebaseFirestore.collection("Users").document(user_id).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -227,6 +233,8 @@ public class SetupActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // Checking if the Image request code is from Crop Activity Only.
+
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -242,6 +250,8 @@ public class SetupActivity extends AppCompatActivity {
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
 
                 Exception error = result.getError();
+
+                Toast.makeText(this, "Error"+ error, Toast.LENGTH_SHORT).show();
             }
         }
     }

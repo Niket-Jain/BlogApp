@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // Init.
     private EditText loginEmailText;
     private EditText loginPasswordText;
     private ImageView loginLogoImageView;
@@ -46,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent regIntent= new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(regIntent);
             }
@@ -55,10 +55,10 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String loginText= loginEmailText.getText().toString();
                 String passwordText= loginPasswordText.getText().toString();
 
+                // Checking if the credentials are not empty.
                 if (!TextUtils.isEmpty(loginText) && !TextUtils.isEmpty(passwordText)) {
 
                     loginProgressBar.setVisibility(View.VISIBLE);

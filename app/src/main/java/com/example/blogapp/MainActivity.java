@@ -28,15 +28,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Init.
     private Toolbar toolbar_main;
     private Button addPostFloatingButton;
     private BottomNavigationView bottomNavigationView;
 
+    // Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
 
     private String current_UserID;
 
+    // Fragments.
     private HomeFragment homeFragment;
     private NotificationFragment notificationFragment;
     private AccountFragment accountFragment;
@@ -53,14 +56,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar_main);
         toolbar_main.setTitle("Photo Blog");
 
-
         homeFragment= new HomeFragment();
         notificationFragment= new NotificationFragment();
         accountFragment= new AccountFragment();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
-
         addPostFloatingButton= findViewById(R.id.addPostFloatingButton);
 
         addPostFloatingButton.setOnClickListener(new View.OnClickListener() {
@@ -106,12 +106,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        // If not logged in.
+
         if (currentUser == null){
            SendToLoginPage();
         }else{
-
             current_UserID= mAuth.getCurrentUser().getUid();
-
             firebaseFirestore.collection("Users").document(current_UserID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        // To create the menu.
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ReplaceFragment(Fragment fragment){
-
+        // To replace fragments.
         FragmentTransaction fragmentTransaction= getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_container,fragment);
         fragmentTransaction.commit();

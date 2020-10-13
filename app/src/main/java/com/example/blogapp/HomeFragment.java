@@ -36,6 +36,7 @@ import Adapters.HomeAdapter;
 
 public class HomeFragment extends Fragment {
 
+    // Init.
     private RecyclerView blogListView;
     private List<PostBlog> blog_list;
     private FirebaseFirestore firebaseFirestore;
@@ -52,13 +53,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View mView =inflater.inflate(R.layout.fragment_home, container, false);
 
         // Firebase
         firebaseFirestore = FirebaseFirestore.getInstance();
         ref = firebaseFirestore.collection("Posts");
-
 
         blog_list = new ArrayList<>();
 
@@ -67,7 +66,9 @@ public class HomeFragment extends Fragment {
         blogListView.setLayoutManager(new LinearLayoutManager(getContext()));
         blogListView.setHasFixedSize(false);
 
+        // Calling Functions.
         gettingData();
+
         adapter = new HomeAdapter(blog_list,getContext());
         blogListView.setAdapter(adapter);
 
