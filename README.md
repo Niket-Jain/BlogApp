@@ -11,7 +11,11 @@ You can contribute to this repo by:
 3. Submit your pull request. 🚀
 
 ### Preview 
-![Screenshot1](Screenshots/Screenshot_1602504117.png).
+
+<p align="center">
+  <img src="Screenshots/Screenshot_1602504117.png" width="60%" >
+</p>
+
 
 ### Upcoming features-
 1- Like,Comment other users blog.
