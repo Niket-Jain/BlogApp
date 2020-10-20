@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Init.
     private Toolbar toolbar_main;
-    private Button addPostFloatingButton;
+    private FloatingActionButton addPostFloatingButton;
     private BottomNavigationView bottomNavigationView;
 
     // Firebase
